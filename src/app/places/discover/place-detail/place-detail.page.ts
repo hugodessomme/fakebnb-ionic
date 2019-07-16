@@ -40,7 +40,22 @@ export class PlaceDetailPage implements OnInit {
     // otherwise, if we load this page directly, navigating back will not work
     // this.navController.pop();
     this.modalController
-      .create({ component: CreateBookingComponent })
-      .then(modalElement => modalElement.present());
+      .create({
+        component: CreateBookingComponent,
+        componentProps: {
+          selectedPlace: this.place
+        }
+      })
+      .then(modalElement => {
+        modalElement.present();
+        return modalElement.onDidDismiss();
+      })
+      .then(resultData => {
+        console.log(resultData.data, resultData.role);
+
+        if (resultData.role === "confirm") {
+          console.log("BOOKED!");
+        }
+      });
   }
 }
