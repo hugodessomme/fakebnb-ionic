@@ -1,6 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from "@angular/router";
-import { NavController, ModalController } from "@ionic/angular";
+import {
+  NavController,
+  ModalController,
+  ActionSheetController
+} from "@ionic/angular";
 import { PlacesService } from "../../places.service";
 import { Place } from "../../place.model";
 import { CreateBookingComponent } from "../../../bookings/create-booking/create-booking.component";
@@ -18,7 +22,8 @@ export class PlaceDetailPage implements OnInit {
     private navController: NavController,
     private route: ActivatedRoute,
     private placesService: PlacesService,
-    private modalController: ModalController
+    private modalController: ModalController,
+    private actionSheetController: ActionSheetController
   ) {}
 
   ngOnInit() {
@@ -39,6 +44,32 @@ export class PlaceDetailPage implements OnInit {
     // so we need to be sure we navigated to this page from another one before,
     // otherwise, if we load this page directly, navigating back will not work
     // this.navController.pop();
+
+    this.actionSheetController
+      .create({
+        header: "Choose an Action",
+        buttons: [
+          {
+            text: "Selecte Date",
+            handler: () => this.openBookingModal("select")
+          },
+          {
+            text: "Random Date",
+            handler: () => this.openBookingModal("random")
+          },
+          {
+            text: "Cancel",
+            role: "cancel"
+          }
+        ]
+      })
+      .then(actionSheetElement => {
+        actionSheetElement.present();
+      });
+  }
+
+  openBookingModal(mode: "select" | "random") {
+    console.log(mode);
     this.modalController
       .create({
         component: CreateBookingComponent,
