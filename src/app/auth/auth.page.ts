@@ -8,8 +8,6 @@ import { Router } from "@angular/router";
   styleUrls: ["./auth.page.scss"]
 })
 export class AuthPage implements OnInit {
-  private;
-
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {}
